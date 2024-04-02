@@ -2,9 +2,13 @@ import { LuCheckCircle, LuPlus, LuStar, LuSunMedium } from "react-icons/lu";
 import { formatCurrency } from "../../utils/helpers";
 import { usePlant } from "./usePlant";
 import Loader from "../../components/Loader";
+import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function PlantDetail() {
   const { plant, isLoading } = usePlant();
+  const { increaseItemQuantity } = useCart();
+  const navigate = useNavigate();
 
   if (isLoading) return <Loader />;
 
@@ -28,6 +32,11 @@ export default function PlantDetail() {
         <LuSunMedium className="text-xl" />
       </>
     );
+  }
+
+  function handleAddCart(plant) {
+    increaseItemQuantity(plant);
+    navigate("/cart");
   }
 
   return (
@@ -88,6 +97,7 @@ export default function PlantDetail() {
             </div>
             <button
               disabled={plant.stock === 0}
+              onClick={() => handleAddCart(plant)}
               className="text-green-700 bg-green-100 border-none rounded-full btn hover:bg-green-200">
               <LuPlus /> Add to cart
             </button>

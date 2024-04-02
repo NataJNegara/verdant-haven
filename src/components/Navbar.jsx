@@ -2,10 +2,15 @@ import { LuShoppingCart, LuUser } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { useUser } from "../features/authentication/useUser";
 import { useLogout } from "../features/authentication/useLogout";
+import { useCart } from "../context/CartContext";
+import { formatCurrency } from "../utils/helpers";
 
 export default function Navbar() {
   const { user } = useUser();
   const { isLogout, logout } = useLogout();
+  const { totalCartItem, getPriceAfterDiscount } = useCart();
+
+  const subTotal = getPriceAfterDiscount();
 
   return (
     <>
@@ -29,15 +34,23 @@ export default function Navbar() {
               className="btn btn-ghost btn-circle">
               <div className="indicator">
                 <LuShoppingCart className="text-xl" />
-                <span className="badge badge-sm indicator-item">8</span>
+                {totalCartItem > 0 && (
+                  <span className="badge badge-sm indicator-item">
+                    {totalCartItem}
+                  </span>
+                )}
               </div>
             </div>
             <div
               tabIndex={0}
               className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow">
               <div className="card-body">
-                <span className="text-lg font-bold">8 Items</span>
-                <span className="text-info">Subtotal: $999</span>
+                <span className="text-lg font-bold">
+                  {totalCartItem ? totalCartItem + " Items" : "No item in cart"}
+                </span>
+                <span className="text-info">
+                  Subtotal: {formatCurrency(subTotal)}
+                </span>
                 <div className="card-actions">
                   <Link
                     to="/cart"
@@ -60,7 +73,7 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 gap-4">
               {!user ? (
                 <>
                   <li>
@@ -74,6 +87,12 @@ export default function Navbar() {
                 <>
                   <li>
                     <Link to="/profile">Profile</Link>
+                  </li>
+                  <li>
+                    <Link to="/product">Product</Link>
+                  </li>
+                  <li>
+                    <Link to="/orders">Orders</Link>
                   </li>
                   <li>
                     <button

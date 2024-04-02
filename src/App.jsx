@@ -10,6 +10,8 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/RegisterPage";
+import { CartProvider } from "./context/CartContext";
+import ProductPage from "./pages/ProductPage";
 
 export default function App() {
   const queryClient = new QueryClient({
@@ -23,19 +25,23 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/shop/:plantId" element={<PlantDetail />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <CartProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/shop/:plantId" element={<PlantDetail />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/product" element={<ProductPage />} />
+
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </CartProvider>
 
       <Toaster
         position="top-center"
