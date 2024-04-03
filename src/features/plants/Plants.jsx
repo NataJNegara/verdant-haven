@@ -1,12 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatCurrency } from "../../utils/helpers";
 import { usePlants } from "./usePlants";
 import Loader from "../../components/Loader";
+import NotFound from "../../components/NotFound";
 
 export default function Plants() {
   const { plants, isLoading } = usePlants();
+  const navigate = useNavigate();
 
   if (isLoading) return <Loader />;
+
+  if (plants.length === 0)
+    return (
+      <div className="h-screen mt-48">
+        <NotFound onNavigate={() => navigate("/")} btnText="Back to Home" />
+      </div>
+    );
 
   return (
     <div className="flex flex-wrap justify-center gap-8 mt-16 lg:justify-start xl:gap-10 ">

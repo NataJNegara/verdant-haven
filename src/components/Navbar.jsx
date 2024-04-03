@@ -4,6 +4,7 @@ import { useUser } from "../features/authentication/useUser";
 import { useLogout } from "../features/authentication/useLogout";
 import { useCart } from "../context/CartContext";
 import { formatCurrency } from "../utils/helpers";
+import ConfirmModal from "./ConfirmModal";
 
 export default function Navbar() {
   const { user } = useUser();
@@ -111,30 +112,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      <dialog id="my_modal_2" className="modal">
-        <div className="modal-box">
-          <h3 className="text-lg font-bold">Are you sure to logout?</h3>
-          <p className="py-4">
-            Change you made may not be saved. Make sure to complete the
-            transactions before leaving.
-          </p>
-          <div className="modal-action">
-            <form method="dialog">
-              <button
-                className="bg-red-500 btn hover:bg-red-600 text-red-50"
-                onClick={logout}>
-                Logout
-              </button>
-            </form>
-            <form method="dialog">
-              <button className="btn">Close</button>
-            </form>
-          </div>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>close</button>
-        </form>
-      </dialog>
+      <ConfirmModal handleClick={logout} />
     </>
   );
 }

@@ -12,7 +12,7 @@ export default function PlantDetail() {
 
   if (isLoading) return <Loader />;
 
-  const currentPrice = ((100 - 20) / 100) * plant.price;
+  const currentPrice = ((100 - plant.discount) / 100) * plant.price;
 
   let lights;
   if (plant.light === "low") {

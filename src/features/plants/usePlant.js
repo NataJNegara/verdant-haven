@@ -8,6 +8,7 @@ export function usePlant() {
   const { data: plant, isLoading } = useQuery({
     queryFn: () => getPlant(plantId),
     queryKey: ["plant", plantId],
+    retry: false,
   });
 
   return { plant, isLoading };

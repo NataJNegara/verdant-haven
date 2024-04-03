@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import RegisterPage from "./pages/RegisterPage";
 import { CartProvider } from "./context/CartContext";
 import ProductPage from "./pages/ProductPage";
+import AddPlantPage from "./pages/AddPlantPage";
 
 export default function App() {
   const queryClient = new QueryClient({
@@ -35,6 +36,8 @@ export default function App() {
               <Route path="/shop/:plantId" element={<PlantDetail />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/product" element={<ProductPage />} />
+              <Route path="/create" element={<AddPlantPage />} />
+              <Route path="/update/:plantId" element={<AddPlantPage />} />
 
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />

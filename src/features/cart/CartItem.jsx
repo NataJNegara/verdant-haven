@@ -3,7 +3,7 @@ import { formatCurrency } from "../../utils/helpers";
 import { useCart } from "../../context/CartContext";
 
 export default function CartItem({ cart }) {
-  const discountPrice = ((100 - 20) / 100) * cart.price;
+  const discountPrice = ((100 - cart.discount) / 100) * cart.price;
   const subTotal = discountPrice * cart.quantity;
 
   const { increaseItemQuantity, decreaseItemQuantity, deleteItem } = useCart();
@@ -34,9 +34,11 @@ export default function CartItem({ cart }) {
         <div className="flex justify-between md:block">
           <p className="md:hidden">Price</p>
           <div>
-            <p className="text-gray-400 line-through md:text-center">
-              {formatCurrency(cart.price)}
-            </p>
+            {cart.discount > 0 && (
+              <p className="text-gray-400 line-through md:text-center">
+                {formatCurrency(cart.price)}
+              </p>
+            )}
             <p className="md:text-center">{formatCurrency(discountPrice)}</p>
           </div>
         </div>
