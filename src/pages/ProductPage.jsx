@@ -3,9 +3,19 @@ import PlantItems from "../features/plants/PlantItems";
 import { usePlants } from "../features/plants/usePlants";
 import Loader from "../components/Loader";
 import { LuPlus } from "react-icons/lu";
+import Pagination from "../components/Pagination";
+import { useState } from "react";
 
 export default function ProductPage() {
   const { plants, isLoading } = usePlants();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(8);
+
+  const indexOfLastItem = currentPage * postPerPage;
+  const indexOfFirstItem = indexOfLastItem - postPerPage;
+  const currentPlants = plants?.slice(indexOfFirstItem, indexOfLastItem);
+  const plantsCount = plants?.length;
+  const pageCount = Math.ceil(plantsCount / postPerPage);
 
   if (isLoading) return <Loader />;
 
@@ -30,12 +40,20 @@ export default function ProductPage() {
           </div>
           <div className="divider before:h-[1px] after:h-[1px]"></div>
           <ul className="flex flex-col gap-4">
-            {plants.map((plant) => (
+            {currentPlants.map((plant) => (
               <PlantItems key={plant.id} plant={plant} />
             ))}
           </ul>
         </div>
       </div>
+
+      <Pagination
+        setCurrentPage={setCurrentPage}
+        pageCount={pageCount}
+        currentPage={currentPage}
+        plantsCount={plantsCount}
+        indexOfLastItem={indexOfLastItem}
+      />
     </div>
   );
 }

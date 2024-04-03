@@ -39,8 +39,6 @@ export default function CreatePlantForm() {
     }
   }
 
-  if (isLoading) return <Loader />;
-
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Name" error={errors?.name?.message}>
@@ -164,7 +162,7 @@ export default function CreatePlantForm() {
       <button
         className="bg-green-500 border-none btn hover:bg-green-600 btn-active text-green-50"
         disabled={isWorking}>
-        Add product
+        {isEdit ? "Update Product" : "Add Product"}
       </button>
     </form>
   );

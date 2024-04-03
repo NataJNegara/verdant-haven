@@ -37,7 +37,7 @@ export default function Plants() {
               <div className="card-actions">
                 <div className="badge badge-outline">{item.tags}</div>
                 <div className="badge badge-outline">
-                  {item.stock > 0 ? item.stock + " available" : "Sold out"}
+                  {item.stock > 0 ? item.stock + " Stock" : "Sold out"}
                 </div>
               </div>
             </div>
