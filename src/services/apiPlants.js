@@ -75,3 +75,45 @@ export async function deletePlant(id) {
     throw new Error("Failed to delete item");
   }
 }
+
+// update plant by id
+
+export async function updatePlant(newPlant, id) {
+  // getting old image
+  const hasImagePath = newPlant.imageUrl?.startsWith?.(supabaseUrl);
+
+  // generate file name if image changes
+  const imageName = `${Math.random()}-${newPlant.imageUrl.name}`;
+
+  const imagePath = hasImagePath
+    ? newPlant.imageUrl
+    : `${supabaseUrl}/storage/v1/object/public/plant-images/${imageName}`;
+
+  const { data, error } = await supabase
+    .from("plants")
+    .update({ ...newPlant, imageUrl: imagePath })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Failed to update product");
+  }
+
+  if (!hasImagePath) {
+    const { error: storageError } = await supabase.storage
+      .from("plant-images")
+      .upload(imageName, newPlant.imageUrl);
+
+    if (storageError) {
+      await supabase.from("plants").delete().eq("id", data.id);
+      console.log(storageError);
+      throw new Error(
+        "Plant image could not be uploaded and failed to create a new plant"
+      );
+    }
+  }
+
+  return data;
+}

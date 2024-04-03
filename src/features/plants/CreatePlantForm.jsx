@@ -5,13 +5,17 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { usePlant } from "./usePlant";
 import Loader from "../../components/Loader";
+import { useUpdatePlant } from "./useUpdatePlant";
 
 export default function CreatePlantForm() {
   const { plantId } = useParams();
   const isEdit = Boolean(plantId);
 
   const { isCreating, createPlant } = useCreatePlant();
+  const { isUpdating, updatePlant } = useUpdatePlant();
   const { plant, isLoading } = usePlant();
+
+  const isWorking = isCreating || isUpdating;
 
   const {
     register,
@@ -25,8 +29,14 @@ export default function CreatePlantForm() {
   }, [reset, plant]);
 
   function onSubmit(data) {
-    const image = data.imageUrl[0];
-    createPlant({ ...data, imageUrl: image }, { onSettled: reset() });
+    const imageUrl =
+      typeof data.imageUrl === "string" ? data.imageUrl : data.imageUrl[0];
+
+    if (isEdit) {
+      updatePlant({ newPlant: { ...data, imageUrl: imageUrl }, id: plantId });
+    } else {
+      createPlant({ ...data, imageUrl: imageUrl }, { onSettled: reset() });
+    }
   }
 
   if (isLoading) return <Loader />;
@@ -35,7 +45,7 @@ export default function CreatePlantForm() {
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Name" error={errors?.name?.message}>
         <input
-          disabled={isCreating}
+          disabled={isWorking}
           className="w-full input input-bordered"
           type="text"
           id="name"
@@ -45,7 +55,7 @@ export default function CreatePlantForm() {
       </FormRow>
       <FormRow label="Description" error={errors?.description?.message}>
         <textarea
-          disabled={isCreating}
+          disabled={isWorking}
           rows="5"
           className="w-full h-full input input-bordered"
           type="text"
@@ -62,7 +72,7 @@ export default function CreatePlantForm() {
       </FormRow>
       <FormRow label="Price" error={errors?.price?.message}>
         <input
-          disabled={isCreating}
+          disabled={isWorking}
           className="w-full input input-bordered"
           type="number"
           id="price"
@@ -95,7 +105,7 @@ export default function CreatePlantForm() {
       </FormRow>
       <FormRow label="Stock" error={errors?.stock?.message}>
         <input
-          disabled={isCreating}
+          disabled={isWorking}
           className="w-full input input-bordered"
           type="number"
           id="stock"
@@ -111,7 +121,7 @@ export default function CreatePlantForm() {
       </FormRow>
       <FormRow label="Discount" error={errors?.discount?.message}>
         <input
-          disabled={isCreating}
+          disabled={isWorking}
           className="w-full input input-bordered"
           type="number"
           id="discount"
@@ -131,7 +141,7 @@ export default function CreatePlantForm() {
       </FormRow>
       <FormRow label="Tags" error={errors?.tags?.message}>
         <input
-          disabled={isCreating}
+          disabled={isWorking}
           className="w-full input input-bordered"
           type="text"
           id="tags"
@@ -141,17 +151,19 @@ export default function CreatePlantForm() {
       </FormRow>
       <FormRow label="Plant photo">
         <input
-          disabled={isCreating}
+          disabled={isWorking}
           type="file"
           id="image"
           className="w-full file:text-green-50 file:bg-green-500 file:border-green-500 file-input file-input-bordered file-input-success"
           accept="image/*"
-          {...register("imageUrl", { required: "Product image is required" })}
+          {...register("imageUrl", {
+            required: isEdit ? false : "Product image is required",
+          })}
         />
       </FormRow>
       <button
         className="bg-green-500 border-none btn hover:bg-green-600 btn-active text-green-50"
-        disabled={isCreating}>
+        disabled={isWorking}>
         Add product
       </button>
     </form>
