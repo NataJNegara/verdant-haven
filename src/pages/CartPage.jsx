@@ -1,14 +1,12 @@
-import { formatCurrency } from "../utils/helpers";
 import CartItem from "../features/cart/CartItem";
 import NotFound from "../components/NotFound";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import Checkout from "../components/Checkout";
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const { carts, getPriceAfterDiscount, totalCartItem } = useCart();
-
-  const totalDiscountPrice = getPriceAfterDiscount();
+  const { carts, totalCartItem } = useCart();
 
   return (
     <div className="customContainer">
@@ -40,23 +38,7 @@ export default function CartPage() {
           </ul>
         </div>
         {/* cart summary */}
-        {carts.length > 0 && (
-          <div className="self-end w-full p-4 border lg:max-w-screen-sm">
-            <h3 className="mb-8 text-xl font-semibold">Cart summary</h3>
-            <div className="flex justify-between">
-              <p>Total item</p>
-              <p className="font-semibold">{totalCartItem}&times;</p>
-            </div>
-            <div className="divider before:h-[1px] after:h-[1px]"></div>
-            <div className="flex justify-between mb-4">
-              <p>Subtotal</p>
-              <p className="font-semibold">
-                {formatCurrency(totalDiscountPrice)}
-              </p>
-            </div>
-            <button className="w-full mt-4 btn btn-neutral">Checkout</button>
-          </div>
-        )}
+        <Checkout carts={carts} />
       </div>
     </div>
   );

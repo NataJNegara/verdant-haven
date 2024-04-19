@@ -4,7 +4,6 @@ import { useCreatePlant } from "./useCreatePlant";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { usePlant } from "./usePlant";
-import Loader from "../../components/Loader";
 import { useUpdatePlant } from "./useUpdatePlant";
 
 export default function CreatePlantForm() {
@@ -80,6 +79,17 @@ export default function CreatePlantForm() {
               value: 1,
               message: "Minimum product price can't be 0",
             },
+          })}
+        />
+      </FormRow>
+      <FormRow label="Price Key" error={errors?.priceKey?.message}>
+        <input
+          disabled={isWorking}
+          className="w-full input input-bordered"
+          type="text"
+          id="priceKey"
+          {...register("priceKey", {
+            required: "Please input price key from stripe",
           })}
         />
       </FormRow>
