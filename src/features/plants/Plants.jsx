@@ -4,13 +4,19 @@ import { usePlants } from "./usePlants";
 import Loader from "../../components/Loader";
 import NotFound from "../../components/NotFound";
 
-export default function Plants() {
+export default function Plants({ search }) {
   const { plants, isLoading } = usePlants();
   const navigate = useNavigate();
 
+  const filteredPlants = plants?.filter((plant) =>
+    search === ""
+      ? plant
+      : plant.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   if (isLoading) return <Loader />;
 
-  if (plants.length === 0)
+  if (filteredPlants.length === 0)
     return (
       <div className="h-screen mt-48">
         <NotFound onNavigate={() => navigate("/")} btnText="Back to Home" />
@@ -19,7 +25,7 @@ export default function Plants() {
 
   return (
     <div className="flex flex-wrap justify-center gap-8 mt-16 lg:justify-start xl:gap-10 ">
-      {plants.map((item) => (
+      {filteredPlants.map((item) => (
         <Link to={`/shop/${item.id}`} key={item.name}>
           <div className="h-full rounded-none w-28 md:w-72 xl:w-64 card bg-base-100">
             <figure className="overflow-hidden">

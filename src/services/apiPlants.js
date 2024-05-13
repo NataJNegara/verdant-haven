@@ -1,11 +1,17 @@
 import supabase, { supabaseUrl } from "./supabase";
 
 // getPlants===================
-export async function getPlants() {
-  let { data, error } = await supabase
+export async function getPlants({ filter }) {
+  let query = supabase
     .from("plants")
     .select("*")
     .order("created_at", { ascending: false });
+
+  if (filter) {
+    query = query.eq(filter.field, filter.value);
+  }
+
+  let { data, error } = await query;
 
   if (error) {
     console.log(error);

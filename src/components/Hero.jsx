@@ -1,9 +1,11 @@
+import { Link } from "react-router-dom";
+
 export default function Hero() {
   return (
-    <div className="hero min-h-screen px-8 lg:px-16">
-      <div className="grid grid-cols-1 lg:grid-cols-2 w-full ">
-        <div className=" self-center">
-          <h1 className="text-2xl lg:text-5xl font-semibold lg:mb-16 uppercase">
+    <div className="min-h-screen px-8 hero lg:px-16">
+      <div className="grid w-full grid-cols-1 lg:grid-cols-2 ">
+        <div className="self-center ">
+          <h1 className="text-2xl font-semibold uppercase lg:text-5xl lg:mb-16">
             Where Green Dreams Blossom!
           </h1>
           <p className="py-6">
@@ -15,11 +17,13 @@ export default function Hero() {
             plant shop is your oasis of inspiration and guidance. Let&apos;s
             cultivate a greener, happier world together, one plant at a time.
           </p>
-          <button className="btn btn-success text-white">Shop Now</button>
+          <Link to="/shop" className="text-white btn btn-success">
+            Shop Now
+          </Link>
         </div>
         <img
           src="/plants/thumbnail/hero.jpg"
-          className="content-end justify-self-end row-start-1 lg:row-start-auto w-full mb-8 lg:mb-0 lg:w-auto"
+          className="content-end w-full row-start-1 mb-8 justify-self-end lg:row-start-auto lg:mb-0 lg:w-auto"
         />
       </div>
     </div>

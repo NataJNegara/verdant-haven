@@ -9,7 +9,7 @@ import ScrollToTop from "./utils/ScrollToTop";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import { Toaster } from "react-hot-toast";
-import RegisterPage from "./pages/RegisterPage";
+// import RegisterPage from "./pages/RegisterPage";
 import { CartProvider } from "./context/CartContext";
 import ProductPage from "./pages/ProductPage";
 import AddPlantPage from "./pages/AddPlantPage";
@@ -40,7 +40,7 @@ export default function App() {
               <Route path="/update/:plantId" element={<AddPlantPage />} />
 
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+              {/* <Route path="/register" element={<RegisterPage />} /> */}
             </Route>
           </Routes>
         </BrowserRouter>
